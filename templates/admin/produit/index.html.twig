@@ -2,15 +2,210 @@
 
 {% block title %}Administration des Produits{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .products-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .products-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .products-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .btn-create {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--success-color);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-create:hover {
+            background: var(--success-dark);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .products-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .products-table table {
+            margin: 0;
+        }
+
+        .products-table thead th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+            border: none;
+        }
+
+        .products-table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+
+        .products-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .products-table tbody tr:hover {
+            background-color: rgba(var(--primary-rgb), 0.05);
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #eee;
+        }
+
+        .product-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-button.edit {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+        }
+
+        .action-button.edit:hover {
+            background: rgba(var(--primary-rgb), 0.2);
+        }
+
+        .action-button.delete {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .action-button.delete:hover {
+            background: rgba(220, 53, 69, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Administration des Produits</h1>
-            <a href="{{ path('app_admin_produit_new') }}" class="btn btn-success">Créer un nouveau produit</a>
+    <div class="products-container">
+        <div class="products-header">
+            <h1 class="products-title">
+                <i class="bi bi-box-seam"></i>
+                Administration des Produits
+            </h1>
+            <div class="products-actions">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Rechercher un produit..." id="productSearch">
+                </div>
+                <a href="{{ path('app_admin_produit_new') }}" class="btn-create">
+                    <i class="bi bi-plus-lg"></i>
+                    Créer un nouveau produit
+                </a>
+            </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped">
+        <div class="products-table">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -24,25 +219,53 @@
                     {% for produit in produits %}
                         <tr>
                             <td>{{ produit.id }}</td>
-                            <td>{{ produit.name }}</td>
-                            <td>{{ produit.price }} €</td>
                             <td>
-                                <div class="btn-group">
-                                    <a href="{{ path('app_admin_produit_edit', {'id': produit.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                                <div class="product-image" style="background: #eee; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-image" style="font-size: 1.5rem; color: #999;"></i>
+                                </div>
+                            </td>
+                            <td class="product-name">{{ produit.name }}</td>
+                            <td class="product-price">{{ produit.price }} €</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ path('app_admin_produit_edit', {'id': produit.id}) }}" class="action-button edit">
+                                        <i class="bi bi-pencil"></i>
+                                        Modifier
+                                    </a>
                                     <form method="post" action="{{ path('app_admin_produit_delete', {'id': produit.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');" style="display: inline-block">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
-                                        <button class="btn btn-sm btn-danger">Supprimer</button>
+                                        <button type="submit" class="action-button delete">
+                                            <i class="bi bi-trash"></i>
+                                            Supprimer
+                                        </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5">Aucun produit trouvé</td>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="bi bi-box-seam"></i>
+                                    <p>Aucun produit trouvé</p>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        document.getElementById('productSearch').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.products-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText) ? '' : 'none';
+            });
+        });
+    </script>
 {% endblock %} 

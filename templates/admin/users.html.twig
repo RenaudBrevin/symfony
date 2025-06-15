@@ -2,12 +2,208 @@
 
 {% block title %}Gestion des Utilisateurs{% endblock %}
 
-{% block body %}
-    <div class="container mt-4">
-        <h1>Gestion des Utilisateurs</h1>
+{% block stylesheets %}
+    <style>
+        .users-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
 
-        <div class="table-responsive">
-            <table class="table table-striped">
+        .users-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .users-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .users-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .users-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .users-table table {
+            margin: 0;
+        }
+
+        .users-table thead th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+            border: none;
+        }
+
+        .users-table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+
+        .users-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .users-table tbody tr:hover {
+            background-color: rgba(var(--primary-rgb), 0.05);
+        }
+
+        .role-badge {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+            margin: 0.25rem;
+            display: inline-block;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge.active {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .status-badge.inactive {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-button.edit {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+        }
+
+        .action-button.edit:hover {
+            background: rgba(var(--primary-rgb), 0.2);
+        }
+
+        .action-button.toggle {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .action-button.toggle:hover {
+            background: rgba(255, 193, 7, 0.2);
+        }
+
+        .action-button.delete {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .action-button.delete:hover {
+            background: rgba(220, 53, 69, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="users-container">
+        <div class="users-header">
+            <h1 class="users-title">
+                <i class="bi bi-people"></i>
+                Gestion des Utilisateurs
+            </h1>
+            <div class="users-actions">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Rechercher un utilisateur..." id="userSearch">
+                </div>
+            </div>
+        </div>
+
+        <div class="users-table">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -27,40 +223,63 @@
                             <td>{{ user.name }}</td>
                             <td>
                                 {% for role in user.roles %}
-                                    <span class="badge bg-primary">{{ role }}</span>
+                                    <span class="role-badge">{{ role }}</span>
                                 {% endfor %}
                             </td>
                             <td>{{ user.points }}</td>
                             <td>
-                                {% if user.actif %}
-                                    <span class="badge bg-success">Actif</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Inactif</span>
-                                {% endif %}
+                                <span class="status-badge {{ user.actif ? 'active' : 'inactive' }}">
+                                    <i class="bi {{ user.actif ? 'bi-check-circle' : 'bi-x-circle' }}"></i>
+                                    {{ user.actif ? 'Actif' : 'Inactif' }}
+                                </span>
                             </td>
                             <td>
-                                <div class="btn-group">
-                                    <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                                <div class="action-buttons">
+                                    <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}" class="action-button edit">
+                                        <i class="bi bi-pencil"></i>
+                                        Modifier
+                                    </a>
                                     <form method="post" action="{{ path('app_admin_user_toggle', {'id': user.id}) }}" style="display: inline-block">
                                         <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ user.id) }}">
-                                        <button class="btn btn-sm {{ user.actif ? 'btn-warning' : 'btn-success' }}">
+                                        <button type="submit" class="action-button toggle">
+                                            <i class="bi {{ user.actif ? 'bi-toggle-off' : 'bi-toggle-on' }}"></i>
                                             {{ user.actif ? 'Désactiver' : 'Activer' }}
                                         </button>
                                     </form>
                                     <form method="post" action="{{ path('app_admin_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="display: inline-block">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                                        <button class="btn btn-sm btn-danger">Supprimer</button>
+                                        <button type="submit" class="action-button delete">
+                                            <i class="bi bi-trash"></i>
+                                            Supprimer
+                                        </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="7">Aucun utilisateur trouvé</td>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="bi bi-people"></i>
+                                    <p>Aucun utilisateur trouvé</p>
+                                </div>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        document.getElementById('userSearch').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.users-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText) ? '' : 'none';
+            });
+        });
+    </script>
 {% endblock %} 

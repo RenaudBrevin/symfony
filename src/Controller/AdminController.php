@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ProductType;
-use App\Form\ProfileType;
+use App\Form\UserType;
 use App\Message\AddPointsMessage;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
@@ -116,7 +116,7 @@ class AdminController extends AbstractController
     #[Route('/user/{id}/edit', name: 'app_admin_user_edit', methods: ['GET', 'POST'])]
     public function editUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProfileType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

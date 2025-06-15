@@ -2,63 +2,225 @@
 
 {% block title %}Accueil - Symfony Boutique{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-bg));
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-hero {
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero-primary {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-hero-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-hero-outline:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .stat-action {
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            background: var(--light-bg);
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .stat-action:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .welcome-message {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .points-display {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #f1c40f;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="jumbotron text-center py-5">
-        <h1 class="display-4">Votre Symfony boutique!</h1>
-        <p class="lead">Acheter des produits avec vos points</p>
-        
-        {% if app.user %}
-            <hr class="my-4">
-            <p>Bonjour <strong>{{ app.user.firstname }} {{ app.user.name }}</strong> !</p>
-            <p class="h4">Votre solde : <span class="text-primary">{{ app.user.points }} 💰</span></p>
-            <a class="btn btn-primary btn-lg mt-3" href="{{ path('app_produit_index') }}">
-                Voir les produits
-            </a>
-        {% else %}
-            <hr class="my-4">
-            <p>Connectez-vous pour commencer vos achats</p>
-            <a class="btn btn-primary btn-lg" href="{{ path('app_login') }}">Se connecter</a>
-            <a class="btn btn-outline-primary btn-lg" href="{{ path('app_register') }}">S'inscrire</a>
-        {% endif %}
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Bienvenue sur Symfony Boutique</h1>
+            <p class="hero-subtitle">Votre destination pour des achats exclusifs avec vos points de fidélité</p>
+            
+            {% if app.user %}
+                <p class="welcome-message">Ravi de vous revoir, <strong>{{ app.user.firstname }} {{ app.user.name }}</strong> !</p>
+                <p class="points-display">
+                    <i class="bi bi-coin me-2"></i>{{ app.user.points }} points
+                </p>
+                <div class="hero-buttons">
+                    <a class="btn btn-hero btn-hero-primary" href="{{ path('app_produit_index') }}">
+                        <i class="bi bi-shop me-2"></i>Découvrir nos produits
+                    </a>
+                </div>
+            {% else %}
+                <div class="hero-buttons">
+                    <a class="btn btn-hero btn-hero-primary" href="{{ path('app_login') }}">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                    </a>
+                    <a class="btn btn-hero btn-hero-outline" href="{{ path('app_register') }}">
+                        <i class="bi bi-person-plus me-2"></i>S'inscrire
+                    </a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
     {% if app.user %}
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">💰 Vos Points</h5>
-                        <h2 class="text-primary">{{ app.user.points }}</h2>
-                        <p class="card-text">Points disponibles pour vos achats</p>
-                    </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-wallet2"></i>
                 </div>
+                <div class="stat-value">{{ app.user.points }}</div>
+                <div class="stat-label">Points de fidélité disponibles</div>
             </div>
             
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">🔔 Notifications</h5>
-                        <h2 class="text-info">{{ app.user.notifications|length }}</h2>
-                        <a href="{{ path('app_profile_notifications') }}" class="btn btn-sm btn-info">
-                            Voir les notifications
-                        </a>
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-bell"></i>
                 </div>
+                <div class="stat-value">{{ app.user.notifications|length }}</div>
+                <div class="stat-label">Notifications en attente</div>
+                {% if app.user.notifications|length > 0 %}
+                    <a href="{{ path('app_profile_notifications') }}" class="stat-action">
+                        <i class="bi bi-eye me-1"></i>Voir les notifications
+                    </a>
+                {% endif %}
             </div>
             
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">👤 Statut</h5>
-                        {% if app.user.actif %}
-                            <h2 class="text-success">✓</h2>
-                            <p class="card-text">Compte actif</p>
-                        {% else %}
-                            <h2 class="text-warning">⚠️</h2>
-                            <p class="card-text">Compte désactivé</p>
-                        {% endif %}
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-person-check"></i>
                 </div>
+                {% if app.user.actif %}
+                    <div class="stat-value" style="color: #2ecc71;">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div class="stat-label">Compte actif et prêt à l'emploi</div>
+                {% else %}
+                    <div class="stat-value" style="color: #e74c3c;">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </div>
+                    <div class="stat-label">Compte en attente d'activation</div>
+                {% endif %}
             </div>
         </div>
     {% endif %}
