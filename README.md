@@ -1,8 +1,10 @@
-# Application Symfony - Gestion de Boutique
+# Application Symfony - Gestion de Boutique 
+
+## Projet d'école
 
 Une application web moderne de gestion de boutique développée avec Symfony, offrant des fonctionnalités de gestion des produits, des utilisateurs et un système de points de fidélité.
 
-## 🚀 Fonctionnalités
+## Features
 
 ### Pour les Utilisateurs
 - Inscription et connexion sécurisées
@@ -18,23 +20,6 @@ Une application web moderne de gestion de boutique développée avec Symfony, of
 - Statistiques de la boutique
 - Système de notifications
 
-## 🛠️ Technologies Utilisées
-
-- PHP 8.2+
-- Symfony 6.4+
-- MySQL/MariaDB
-- Bootstrap 5
-- Bootstrap Icons
-- JavaScript
-- API Platform
-
-## 📋 Prérequis
-
-- PHP 8.2 ou supérieur
-- Composer
-- MySQL/MariaDB
-- Node.js et npm (pour les assets)
-- Serveur web (Apache/Nginx)
 
 ## 🔧 Installation
 
@@ -59,15 +44,6 @@ php bin/console doctrine:migrations:migrate
 
 # Charger les données de test
 php bin/console doctrine:fixtures:load
-```
-
-4. Configurer les variables d'environnement
-```bash
-# Copier le fichier .env
-cp .env .env.local
-
-# Modifier les variables dans .env.local
-# DATABASE_URL="mysql://user:password@127.0.0.1:3306/db_name?serverVersion=8.0"
 ```
 
 5. Démarrer le serveur de développement
@@ -98,49 +74,3 @@ src/
 ├── MessageHandler/ # Gestionnaires de messages
 └── EventListener/  # Écouteurs d'événements
 ```
-
-## 🔐 Sécurité
-
-- Authentification sécurisée avec Symfony Security
-- Protection CSRF sur tous les formulaires
-- Validation des données
-- Gestion des rôles utilisateurs
-- Hachage des mots de passe
-
-## 🎨 Interface Utilisateur
-
-- Design moderne et responsive
-- Animations fluides
-- Thème personnalisable
-- Support des icônes Bootstrap
-- Messages flash stylisés
-
-## 📝 Routes Principales
-
-- `/` - Page d'accueil
-- `/login` - Connexion
-- `/register` - Inscription
-- `/profile` - Profil utilisateur
-- `/admin` - Interface d'administration
-- `/admin/users` - Gestion des utilisateurs
-- `/admin/produit` - Gestion des produits
-
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche pour votre fonctionnalité
-3. Commiter vos changements
-4. Pousser vers la branche
-5. Ouvrir une Pull Request
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
-## 👨‍💻 Auteur
-
-[Votre Nom]
-
-## 📞 Support
-
-Pour toute question ou problème, veuillez ouvrir une issue sur le repository.
